@@ -1,0 +1,169 @@
+{
+  "movies": [
+    {
+      "id": "1",
+      "title": "Shadow Warriors",
+      "titleVi": "Chiến Binh Bóng Tối",
+      "description": "An elite squad must stop a global threat in this action-packed thriller.",
+      "descriptionVi": "Một đội đặc nhiệm tinh nuyến phải ngăn chặn mối đe dọa toàn cầu trong bộ phim hành động ly kỳ này.",
+      "genre": ["Action", "Thriller"],
+      "duration": 142,
+      "releaseDate": "2026-03-01",
+      "rating": 8.5,
+      "director": "John Miller",
+      "cast": ["Chris Evans", "Scarlett Johansson", "Tom Hardy"],
+      "poster": "https://images.unsplash.com/photo-1762356121454-877acbd554bb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhY3Rpb24lMjBtb3ZpZSUyMHBvc3RlciUyMGNpbmVtYXRpY3xlbnwxfHx8fDE3NzI2OTQwNTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "now-showing",
+      "ageRating": "T16"
+    },
+    {
+      "id": "2",
+      "title": "Dark Whispers",
+      "titleVi": "Tiếng Thì Thầm Bóng Tối",
+      "description": "A psychological horror that will keep you on the edge of your seat.",
+      "descriptionVi": "Một bộ phim kinh dị tâm lý sẽ khiến bạn nín thở suốt thời lượng phim.",
+      "genre": ["Horror", "Thriller"],
+      "duration": 118,
+      "releaseDate": "2026-02-28",
+      "rating": 7.8,
+      "director": "James Wan",
+      "cast": ["Florence Pugh", "Oscar Isaac", "Tilda Swinton"],
+      "poster": "https://images.unsplash.com/photo-1763054766315-e9216ab5e223?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxob3Jyb3IlMjB0aHJpbGxlciUyMG1vdmllJTIwZGFya3xlbnwxfHx8fDE3NzI2NTA0Njd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "now-showing",
+      "ageRating": "T18"
+    },
+    {
+      "id": "3",
+      "title": "Love in Paris",
+      "titleVi": "Tình Yêu Ở Paris",
+      "description": "A heartwarming romantic comedy set in the city of love.",
+      "descriptionVi": "Một bộ phim hài lãng mạn ấm áp lòng người tại thành phố của tình yêu.",
+      "genre": ["Romance", "Comedy"],
+      "duration": 105,
+      "releaseDate": "2026-03-05",
+      "rating": 8.2,
+      "director": "Nancy Meyers",
+      "cast": ["Emma Stone", "Ryan Gosling", "Marion Cotillard"],
+      "poster": "https://images.unsplash.com/photo-1758874089358-67fe2adc9bcb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxyb21hbnRpYyUyMGNvbWVkeSUyMGNvdXBsZSUyMGhhcHB5fGVufDF8fHx8MTc3Mjc2NDUwOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "now-showing",
+      "ageRating": "P"
+    },
+    {
+      "id": "4",
+      "title": "Cosmic Odyssey",
+      "titleVi": "Hành Trình Vũ Trụ",
+      "description": "An epic space adventure across galaxies far, far away.",
+      "descriptionVi": "Một cuộc phiêu lưu hoành tráng trong không gian vũ trụ.",
+      "genre": ["Sci-Fi", "Adventure"],
+      "duration": 155,
+      "releaseDate": "2026-03-15",
+      "rating": 9.0,
+      "director": "Denis Villeneuve",
+      "cast": ["Timothée Chalamet", "Zendaya", "Rebecca Ferguson"],
+      "poster": "https://images.unsplash.com/photo-1763198216782-b534fea3dcf1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxzY2llbmNlJTIwZmljdGlvbiUyMGZ1dHVyaXN0aWMlMjBzcGFjZXxlbnwxfHx8fDE3NzI3NjQ1MDh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "coming-soon",
+      "ageRating": "T13"
+    },
+    {
+      "id": "5",
+      "title": "Magic Kingdom",
+      "titleVi": "Vương Quốc Phép Thuật",
+      "description": "A magical animated adventure for the whole family.",
+      "descriptionVi": "Một cuộc phiêu lưu hoạt hình đầy phép màu dành cho cả gia đình.",
+      "genre": ["Animation", "Family", "Fantasy"],
+      "duration": 98,
+      "releaseDate": "2026-03-20",
+      "rating": 8.7,
+      "director": "Pete Docter",
+      "cast": ["Voice Cast: Tom Hanks", "Amy Poehler", "Bill Hader"],
+      "poster": "https://images.unsplash.com/photo-1759720488555-d4ca178c2543?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhbmltYXRpb24lMjBjb2xvcmZ1bCUyMGZhbWlseXxlbnwxfHx8fDE3NzI3NjQ1MDl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "coming-soon",
+      "ageRating": "P"
+    },
+    {
+      "id": "6",
+      "title": "The Last Promise",
+      "titleVi": "Lời Hứa Cuối Cùng",
+      "description": "A powerful drama about family, sacrifice, and redemption.",
+      "descriptionVi": "Một bộ phim tâm lý sâu sắc về gia đình, sự hy sinh và cứu rỗi.",
+      "genre": ["Drama"],
+      "duration": 128,
+      "releaseDate": "2026-03-10",
+      "rating": 8.9,
+      "director": "Greta Gerwig",
+      "cast": ["Saoirse Ronan", "Laurie Metcalf", "Timothée Chalamet"],
+      "poster": "https://images.unsplash.com/photo-1667463119298-8fc23c133d50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmFtYSUyMGVtb3Rpb25hbCUyMGFydGlzdGljfGVufDF8fHx8MTc3Mjc2NDUwOXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "trailer": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "now-showing",
+      "ageRating": "T13"
+    }
+  ],
+  "theaters": [
+    { "id": "t1", "name": "CGV Vincom", "location": "Quận 1", "address": "72 Lê Thánh Tôn, Quận 1, TP.HCM" },
+    { "id": "t2", "name": "CGV Crescent Mall", "location": "Quận 7", "address": "101 Tôn Dật Tiên, Quận 7, TP.HCM" },
+    { "id": "t3", "name": "Lotte Cinema Diamond", "location": "Quận 1", "address": "34 Lê Duẩn, Quận 1, TP.HCM" },
+    { "id": "t4", "name": "Galaxy Nguyễn Du", "location": "Quận 1", "address": "116 Nguyễn Du, Quận 1, TP.HCM" }
+  ],
+  "rooms": [
+    { "id": "r1", "theaterId": "t1", "name": "Phòng 1", "totalSeats": 120, "rows": 10, "seatsPerRow": 12 },
+    { "id": "r2", "theaterId": "t1", "name": "Phòng 2", "totalSeats": 100, "rows": 10, "seatsPerRow": 10 },
+    { "id": "r3", "theaterId": "t2", "name": "Phòng 1", "totalSeats": 150, "rows": 12, "seatsPerRow": 13 },
+    { "id": "r4", "theaterId": "t3", "name": "Phòng 1", "totalSeats": 120, "rows": 10, "seatsPerRow": 12 },
+    { "id": "r5", "theaterId": "t4", "name": "Phòng 1", "totalSeats": 140, "rows": 11, "seatsPerRow": 13 }
+  ],
+  "showtimes": [
+    { "id": "s1", "movieId": "1", "theaterId": "t1", "roomId": "r1", "date": "2026-03-06", "time": "10:00", "price": 80000 },
+    { "id": "s2", "movieId": "1", "theaterId": "t1", "roomId": "r1", "date": "2026-03-06", "time": "14:30", "price": 90000 },
+    { "id": "s3", "movieId": "1", "theaterId": "t1", "roomId": "r1", "date": "2026-03-06", "time": "19:00", "price": 100000 },
+    { "id": "s4", "movieId": "1", "theaterId": "t2", "roomId": "r3", "date": "2026-03-06", "time": "11:00", "price": 85000 },
+    { "id": "s5", "movieId": "1", "theaterId": "t2", "roomId": "r3", "date": "2026-03-06", "time": "16:00", "price": 95000 },
+    { "id": "s6", "movieId": "2", "theaterId": "t1", "roomId": "r2", "date": "2026-03-06", "time": "12:00", "price": 80000 },
+    { "id": "s7", "movieId": "2", "theaterId": "t1", "roomId": "r2", "date": "2026-03-06", "time": "20:30", "price": 100000 },
+    { "id": "s8", "movieId": "2", "theaterId": "t3", "roomId": "r4", "date": "2026-03-06", "time": "15:00", "price": 90000 },
+    { "id": "s9", "movieId": "3", "theaterId": "t2", "roomId": "r3", "date": "2026-03-06", "time": "13:00", "price": 80000 },
+    { "id": "s10", "movieId": "3", "theaterId": "t2", "roomId": "r3", "date": "2026-03-06", "time": "17:30", "price": 90000 },
+    { "id": "s11", "movieId": "3", "theaterId": "t4", "roomId": "r5", "date": "2026-03-06", "time": "14:00", "price": 85000 },
+    { "id": "s12", "movieId": "6", "theaterId": "t3", "roomId": "r4", "date": "2026-03-06", "time": "10:30", "price": 80000 },
+    { "id": "s13", "movieId": "6", "theaterId": "t3", "roomId": "r4", "date": "2026-03-06", "time": "18:00", "price": 95000 },
+    { "id": "s14", "movieId": "6", "theaterId": "t4", "roomId": "r5", "date": "2026-03-06", "time": "19:30", "price": 100000 }
+  ],
+  "transactions": [
+    { "id": "tx1", "userId": "u1", "userName": "Nguyễn Văn A", "movieTitle": "Chiến Binh Bóng Tối", "theaterName": "CGV Vincom", "showtime": "2026-03-05 19:00", "seats": ["E5", "E6"], "totalAmount": 200000, "paymentMethod": "Thẻ tín dụng", "status": "completed", "createdAt": "2026-03-05T18:30:00" },
+    { "id": "tx2", "userId": "u2", "userName": "Trần Thị B", "movieTitle": "Tình Yêu Ở Paris", "theaterName": "CGV Crescent Mall", "showtime": "2026-03-05 17:30", "seats": ["F8", "F9"], "totalAmount": 180000, "paymentMethod": "Momo", "status": "completed", "createdAt": "2026-03-05T16:45:00" },
+    { "id": "tx3", "userId": "u3", "userName": "Lê Văn C", "movieTitle": "Tiếng Thì Thầm Bóng Tối", "theaterName": "Lotte Cinema Diamond", "showtime": "2026-03-05 20:30", "seats": ["G10"], "totalAmount": 100000, "paymentMethod": "ZaloPay", "status": "completed", "createdAt": "2026-03-05T19:50:00" },
+    { "id": "tx4", "userId": "u4", "userName": "Phạm Thị D", "movieTitle": "Lời Hứa Cuối Cùng", "theaterName": "Galaxy Nguyễn Du", "showtime": "2026-03-06 19:30", "seats": ["D4", "D5", "D6"], "totalAmount": 300000, "paymentMethod": "Chuyển khoản", "status": "pending", "createdAt": "2026-03-06T18:00:00" }
+  ],
+  "statistics": {
+    "totalRevenue": 15420000,
+    "totalTickets": 187,
+    "totalMovies": 6,
+    "totalTheaters": 4,
+    "revenueByDay": [
+      { "date": "2026-02-28", "revenue": 2100000 },
+      { "date": "2026-03-01", "revenue": 2500000 },
+      { "date": "2026-03-02", "revenue": 1800000 },
+      { "date": "2026-03-03", "revenue": 3200000 },
+      { "date": "2026-03-04", "revenue": 1900000 },
+      { "date": "2026-03-05", "revenue": 2200000 },
+      { "date": "2026-03-06", "revenue": 1720000 }
+    ],
+    "topMovies": [
+      { "title": "Chiến Binh Bóng Tối", "tickets": 45, "revenue": 4200000 },
+      { "title": "Tiếng Thì Thầm Bóng Tối", "tickets": 38, "revenue": 3800000 },
+      { "title": "Tình Yêu Ở Paris", "tickets": 42, "revenue": 3600000 },
+      { "title": "Hành Trình Vũ Trụ", "tickets": 28, "revenue": 2500000 },
+      { "title": "Vương Quốc Phép Thuật", "tickets": 34, "revenue": 3100000 }
+    ],
+    "ticketsByTheater": [
+      { "name": "CGV Vincom", "tickets": 52 },
+      { "name": "CGV Crescent Mall", "tickets": 48 },
+      { "name": "Lotte Cinema Diamond", "tickets": 44 },
+      { "name": "Galaxy Nguyễn Du", "tickets": 43 }
+    ]
+  }
+}

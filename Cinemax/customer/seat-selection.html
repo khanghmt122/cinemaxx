@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Chọn ghế</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">🎬</span><span>CinemaMax</span></a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions"><a href="login.html" class="btn btn-ghost btn-icon">👤</a></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="padding:2rem 0">
+      <a href="#" id="back-link" class="btn btn-ghost" style="margin-bottom:1.5rem">← Quay lại</a>
+      <div class="seat-layout">
+        <div class="booking-block">
+          <h2 style="text-align:center;color:#fff;margin-bottom:1rem">Chọn ghế ngồi</h2>
+          <div class="screen-bar"></div>
+          <p class="screen-label">MÀN HÌNH</p>
+          <div class="seat-rows" id="seat-rows"></div>
+          <div class="legend">
+            <div class="legend-item"><span class="legend-color" style="background:rgba(37,99,235,0.5)"></span> Ghế thường</div>
+            <div class="legend-item"><span class="legend-color" style="background:rgba(202,138,4,0.5)"></span> Ghế VIP</div>
+            <div class="legend-item"><span class="legend-color" style="background:rgba(219,39,119,0.5)"></span> Ghế đôi</div>
+            <div class="legend-item"><span class="legend-color" style="background:#16a34a"></span> Đã chọn</div>
+            <div class="legend-item"><span class="legend-color" style="background:#4b5563"></span> Đã bán</div>
+          </div>
+        </div>
+        <div class="summary-box">
+          <h3>🎫 Thông tin đặt vé</h3>
+          <div id="summary-movie" style="margin-bottom:0.75rem"></div>
+          <div id="summary-details" style="font-size:0.875rem"></div>
+          <div class="summary-total">
+            <span style="color:rgba(255,255,255,0.7)">Tổng tiền</span>
+            <span class="amount" id="total-amount">0đ</span>
+          </div>
+          <button type="button" class="btn btn-primary btn-lg btn-block" id="btn-payment" disabled>Tiếp tục thanh toán</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var showtimeId = App.getQueryParam('showtimeId');
+      var selectedSeats = [];
+      var occupiedSeats = ['C5', 'C6', 'D7', 'E4', 'E5', 'F8', 'F9', 'G10'];
+
+      App.fetchData().then(function () {
+        App.renderHeader('movies');
+        var d = App.data;
+        var showtime = d.showtimes.find(function (s) { return s.id === showtimeId; });
+        var movie = showtime ? d.movies.find(function (m) { return m.id === showtime.movieId; }) : null;
+        var theater = showtime ? d.theaters.find(function (t) { return t.id === showtime.theaterId; }) : null;
+        var room = showtime ? d.rooms.find(function (r) { return r.id === showtime.roomId; }) : null;
+
+        if (!showtime || !movie || !theater || !room) {
+          document.querySelector('.seat-layout').innerHTML = '<p style="color:#fff;text-align:center">Không tìm thấy thông tin</p>';
+          return;
+        }
+
+        document.getElementById('back-link').href = 'booking.html?movieId=' + movie.id;
+        document.getElementById('summary-movie').innerHTML = '<p style="color:rgba(255,255,255,0.5);margin:0">Phim</p><p style="color:#fff;font-weight:600;margin:0">' + movie.titleVi + '</p>';
+        function updateSummary() {
+          document.getElementById('summary-details').innerHTML =
+            '<p style="color:rgba(255,255,255,0.5);margin:0">Rạp</p><p style="color:#fff;margin:0 0 0.5rem">' + theater.name + '</p>' +
+            '<p style="color:rgba(255,255,255,0.5);margin:0">Phòng</p><p style="color:#fff;margin:0 0 0.5rem">' + room.name + '</p>' +
+            '<p style="color:rgba(255,255,255,0.5);margin:0">Suất chiếu</p><p style="color:#fff;margin:0 0 0.5rem">' + showtime.time + ' - ' + new Date(showtime.date).toLocaleDateString('vi-VN') + '</p>' +
+            '<p style="color:rgba(255,255,255,0.5);margin:0">Ghế đã chọn</p><p style="color:#fff;font-weight:600;margin:0 0 0.5rem">' + (selectedSeats.length ? selectedSeats.join(', ') : 'Chưa chọn ghế') + '</p>' +
+            '<p style="color:rgba(255,255,255,0.5);margin:0">Số lượng</p><p style="color:#fff;margin:0">' + selectedSeats.length + ' ghế</p>';
+        }
+
+        var seatMap = App.generateSeatMap(room, occupiedSeats);
+        var total = 0;
+        function recalcTotal() {
+          total = 0;
+          selectedSeats.forEach(function (seatId) {
+            var row = seatMap.find(function (r) { return r[0].row === seatId[0]; });
+            if (row) {
+              var seat = row.find(function (s) { return s.row + s.number === seatId; });
+              if (seat) total += seat.price;
+            }
+          });
+          document.getElementById('total-amount').textContent = App.formatPrice(total);
+          document.getElementById('btn-payment').disabled = selectedSeats.length === 0;
+          if (selectedSeats.length > 0) {
+            document.getElementById('btn-payment').onclick = function () {
+              var bookingData = { showtime: showtime, movie: movie, theater: theater, room: room, selectedSeats: selectedSeats, total: total };
+              sessionStorage.setItem('bookingData', JSON.stringify(bookingData));
+              window.location.href = 'payment.html';
+            };
+          }
+        }
+
+        var rowsEl = document.getElementById('seat-rows');
+        seatMap.forEach(function (row) {
+          var rowDiv = document.createElement('div');
+          rowDiv.className = 'seat-row';
+          var leftLabel = document.createElement('span');
+          leftLabel.className = 'seat-row-label';
+          leftLabel.textContent = row[0].row;
+          rowDiv.appendChild(leftLabel);
+          var seatDiv = document.createElement('div');
+          seatDiv.style.display = 'flex';
+          seatDiv.style.gap = '0.5rem';
+          row.forEach(function (seat) {
+            var seatId = seat.row + seat.number;
+            var btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'seat ' + seat.type + (seat.status === 'occupied' ? ' occupied' : '');
+            btn.textContent = seat.status === 'occupied' ? '' : (selectedSeats.indexOf(seatId) !== -1 ? '✓' : seat.number);
+            if (seat.status !== 'occupied') {
+              btn.onclick = function () {
+                var idx = selectedSeats.indexOf(seatId);
+                if (idx !== -1) {
+                  selectedSeats.splice(idx, 1);
+                  btn.classList.remove('selected');
+                  btn.textContent = seat.number;
+                } else {
+                  selectedSeats.push(seatId);
+                  btn.classList.add('selected');
+                  btn.textContent = '✓';
+                }
+                updateSummary();
+                recalcTotal();
+              };
+            }
+            seatDiv.appendChild(btn);
+          });
+          rowDiv.appendChild(seatDiv);
+          var rightLabel = document.createElement('span');
+          rightLabel.className = 'seat-row-label';
+          rightLabel.textContent = row[0].row;
+          rowDiv.appendChild(rightLabel);
+          rowsEl.appendChild(rowDiv);
+        });
+        updateSummary();
+        recalcTotal();
+      });
+    })();
+  </script>
+</body>
+</html>

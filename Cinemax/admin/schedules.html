@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax Admin - Lịch chiếu</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <aside class="admin-sidebar">
+      <div class="logo">
+        <a href="index.html"><span class="logo-icon">🎬</span><div><span class="brand">CinemaMax</span><div class="sub">Admin Panel</div></div></a>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html">📊 Tổng quan</a>
+        <a href="movies.html">🎬 Quản lý phim</a>
+        <a href="schedules.html" class="active">📅 Lịch chiếu</a>
+        <a href="theaters.html">📍 Rạp chiếu</a>
+        <a href="transactions.html">💳 Giao dịch</a>
+        <a href="statistics.html">📈 Thống kê</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="../customer/index.html" class="btn btn-ghost btn-block">← Về trang chủ</a>
+      </div>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-page-title" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem">
+        <div>
+          <h1>Quản lý lịch chiếu</h1>
+          <p>Sắp xếp và quản lý suất chiếu phim</p>
+        </div>
+        <button type="button" class="btn btn-primary">+ Thêm suất chiếu</button>
+      </div>
+      <div class="filters-row" style="margin-bottom:1.5rem">
+        <span class="icon">📅</span>
+        <input type="date" class="input" id="schedule-date" style="max-width:12rem">
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Thời gian</th>
+              <th>Phim</th>
+              <th>Rạp</th>
+              <th>Phòng</th>
+              <th>Giá vé</th>
+              <th>Trạng thái</th>
+              <th style="text-align:right">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-tbody"></tbody>
+        </table>
+        <p id="schedule-empty" class="empty-state" style="display:none">Không có suất chiếu nào trong ngày này</p>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var selectedDate = new Date().toISOString().split('T')[0];
+      function render() {
+        var d = App.data;
+        var list = d.showtimes.filter(function (s) { return s.date === selectedDate; });
+        var tbody = document.getElementById('schedule-tbody');
+        var empty = document.getElementById('schedule-empty');
+        if (list.length === 0) {
+          tbody.innerHTML = '';
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        tbody.innerHTML = list.map(function (s) {
+          var movie = d.movies.find(function (m) { return m.id === s.movieId; });
+          var theater = d.theaters.find(function (t) { return t.id === s.theaterId; });
+          var room = d.rooms.find(function (r) { return r.id === s.roomId; });
+          return '<tr>' +
+            '<td><span style="font-weight:600">' + s.time + '</span></td>' +
+            '<td>' + (movie ? movie.titleVi : '') + '</td>' +
+            '<td>' + (theater ? theater.name : '') + '</td>' +
+            '<td>' + (room ? room.name : '') + '</td>' +
+            '<td>' + App.formatPrice(s.price) + '</td>' +
+            '<td><span class="badge-green">Sẵn sàng</span></td>' +
+            '<td style="text-align:right"><button type="button" class="btn btn-ghost btn-icon">✎</button> <button type="button" class="btn btn-ghost btn-icon" style="color:#dc2626">🗑</button></td>' +
+          '</tr>';
+        }).join('');
+      }
+      App.fetchData().then(function () {
+        var dateEl = document.getElementById('schedule-date');
+        dateEl.value = selectedDate;
+        dateEl.onchange = function () {
+          selectedDate = this.value;
+          render();
+        };
+        render();
+      });
+    })();
+  </script>
+</body>
+</html>

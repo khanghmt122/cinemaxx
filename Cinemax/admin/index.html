@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax Admin - Tổng quan</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <aside class="admin-sidebar">
+      <div class="logo">
+        <a href="index.html"><span class="logo-icon">🎬</span><div><span class="brand">CinemaMax</span><div class="sub">Admin Panel</div></div></a>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html" class="active">📊 Tổng quan</a>
+        <a href="movies.html">🎬 Quản lý phim</a>
+        <a href="schedules.html">📅 Lịch chiếu</a>
+        <a href="theaters.html">📍 Rạp chiếu</a>
+        <a href="transactions.html">💳 Giao dịch</a>
+        <a href="statistics.html">📈 Thống kê</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="../customer/index.html" class="btn btn-ghost btn-block">← Về trang chủ</a>
+      </div>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-page-title">
+        <h1>Tổng quan</h1>
+        <p>Thống kê tổng quan hệ thống rạp chiếu phim</p>
+      </div>
+      <div class="stats-grid" id="stats-cards"></div>
+      <div class="card-box" style="margin-bottom:1.5rem">
+        <h3 style="color:#fff;margin-bottom:1rem">Top phim bán chạy</h3>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Phim</th><th>Vé đã bán</th><th>Doanh thu</th></tr></thead>
+            <tbody id="top-movies"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+  <script>
+    App.fetchData().then(function () {
+      var s = App.data.statistics;
+      if (!s) return;
+      document.getElementById('stats-cards').innerHTML =
+        '<div class="stat-card"><div class="label">Doanh thu</div><div class="value">' + App.formatPrice(s.totalRevenue) + '</div><p class="label" style="margin-top:0.25rem">+12.5% so với tháng trước</p></div>' +
+        '<div class="stat-card"><div class="label">Vé đã bán</div><div class="value">' + s.totalTickets + '</div><p class="label" style="margin-top:0.25rem">Trong tuần này</p></div>' +
+        '<div class="stat-card"><div class="label">Phim đang chiếu</div><div class="value">' + s.totalMovies + '</div><p class="label" style="margin-top:0.25rem">Tổng số phim</p></div>' +
+        '<div class="stat-card"><div class="label">Rạp chiếu</div><div class="value">' + s.totalTheaters + '</div><p class="label" style="margin-top:0.25rem">Đang hoạt động</p></div>';
+      document.getElementById('top-movies').innerHTML = (s.topMovies || []).map(function (m) {
+        return '<tr><td>' + m.title + '</td><td>' + m.tickets + '</td><td>' + App.formatPrice(m.revenue) + '</td></tr>';
+      }).join('');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Thanh toán</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">🎬</span><span>CinemaMax</span></a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions"><a href="login.html" class="btn btn-ghost btn-icon">👤</a></div>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <div class="container" style="padding:4rem;text-align:center">
+      <p style="color:#fff;font-size:1.25rem">Đang tải...</p>
+    </div>
+  </main>
+
+  <div class="dialog-overlay" id="success-dialog">
+    <div class="dialog">
+      <div class="icon-success">✓</div>
+      <h2>Đặt vé thành công!</h2>
+      <p>Cảm ơn bạn đã sử dụng dịch vụ của CinemaMax.</p>
+      <p>Vé điện tử đã được gửi về email của bạn.</p>
+      <p class="text-sm">Bạn sẽ được chuyển về trang chủ...</p>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var raw = sessionStorage.getItem('bookingData');
+      var booking = raw ? JSON.parse(raw) : null;
+      var main = document.getElementById('main-content');
+
+      if (!booking) {
+        main.innerHTML = '<div class="container" style="padding:4rem;text-align:center">' +
+          '<p style="color:#fff;font-size:1.25rem">Không có thông tin đặt vé</p>' +
+          '<a href="index.html" class="btn btn-primary" style="margin-top:1rem">Về trang chủ</a></div>';
+        return;
+      }
+
+      App.fetchData().then(function () {
+        App.renderHeader('movies');
+      });
+
+      var paymentMethod = 'credit-card';
+      function render() {
+        main.innerHTML =
+          '<div class="container" style="padding:2rem 0">' +
+            '<a href="seat-selection.html?showtimeId=' + booking.showtime.id + '" class="btn btn-ghost" style="margin-bottom:1.5rem">← Quay lại</a>' +
+            '<div class="payment-grid">' +
+              '<div>' +
+                '<h1 style="font-size:1.875rem;color:#fff;margin-bottom:1.5rem">Thanh toán</h1>' +
+                '<form id="payment-form">' +
+                  '<div class="booking-block" style="margin-bottom:1.5rem">' +
+                    '<h3 style="color:#fff;margin-bottom:1rem">Chọn phương thức thanh toán</h3>' +
+                    '<label class="payment-method' + (paymentMethod === 'credit-card' ? ' selected' : '') + '">' +
+                      '<input type="radio" name="method" value="credit-card" checked> 💳 Thẻ tín dụng/Ghi nợ' +
+                    '</label>' +
+                    '<label class="payment-method' + (paymentMethod === 'momo' ? ' selected' : '') + '">' +
+                      '<input type="radio" name="method" value="momo"> 📱 Ví điện tử (Momo/ZaloPay)' +
+                    '</label>' +
+                    '<label class="payment-method' + (paymentMethod === 'bank-transfer' ? ' selected' : '') + '">' +
+                      '<input type="radio" name="method" value="bank-transfer"> 🏦 Chuyển khoản ngân hàng' +
+                    '</label>' +
+                  '</div>' +
+                  '<div class="booking-block" id="payment-details" style="margin-bottom:1.5rem"></div>' +
+                  '<button type="submit" class="btn btn-primary btn-lg btn-block" id="submit-btn">Thanh toán ' + App.formatPrice(booking.total) + '</button>' +
+                '</form>' +
+              '</div>' +
+              '<div class="summary-box">' +
+                '<h3 style="color:#fff">Chi tiết đơn hàng</h3>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Phim</p><p style="color:#fff;font-weight:600;margin:0 0 0.75rem">' + booking.movie.titleVi + '</p>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Rạp</p><p style="color:#fff;margin:0 0 0.5rem">' + booking.theater.name + '</p>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Phòng</p><p style="color:#fff;margin:0 0 0.5rem">' + booking.room.name + '</p>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Suất chiếu</p><p style="color:#fff;margin:0 0 0.5rem">' + booking.showtime.time + ' - ' + new Date(booking.showtime.date).toLocaleDateString('vi-VN') + '</p>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Ghế</p><p style="color:#fff;margin:0 0 0.5rem">' + booking.selectedSeats.join(', ') + '</p>' +
+                '<p style="color:rgba(255,255,255,0.5);margin:0">Số lượng</p><p style="color:#fff;margin:0 0 1rem">' + booking.selectedSeats.length + ' ghế</p>' +
+                '<div class="summary-total">' +
+                  '<span style="color:rgba(255,255,255,0.7)">Tổng cộng</span>' +
+                  '<span class="amount">' + App.formatPrice(booking.total) + '</span>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+
+        function updateDetails() {
+          var el = document.getElementById('payment-details');
+          if (!el) return;
+          if (paymentMethod === 'credit-card') {
+            el.innerHTML = '<h3 style="color:#fff;margin-bottom:1rem">Thông tin thanh toán</h3>' +
+              '<div class="form-group"><label class="label">Số thẻ</label><input type="text" class="input" placeholder="1234 5678 9012 3456" required></div>' +
+              '<div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem">' +
+                '<div class="form-group"><label class="label">Ngày hết hạn</label><input type="text" class="input" placeholder="MM/YY" required></div>' +
+                '<div class="form-group"><label class="label">CVV</label><input type="text" class="input" placeholder="123" required></div>' +
+              '</div>' +
+              '<div class="form-group"><label class="label">Tên trên thẻ</label><input type="text" class="input" placeholder="NGUYEN VAN A" required></div>';
+          } else if (paymentMethod === 'momo') {
+            el.innerHTML = '<h3 style="color:#fff;margin-bottom:1rem">Thông tin thanh toán</h3>' +
+              '<p style="color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:1rem">Vui lòng quét mã QR hoặc nhập số điện thoại để thanh toán qua ví điện tử.</p>' +
+              '<div class="qr-demo"><p>QR Code<br>Demo</p></div>';
+          } else {
+            el.innerHTML = '<h3 style="color:#fff;margin-bottom:1rem">Thông tin thanh toán</h3>' +
+              '<p style="color:rgba(255,255,255,0.7);font-size:0.875rem;margin-bottom:0.5rem">Thông tin chuyển khoản:</p>' +
+              '<div class="bank-info">' +
+                '<div><span style="color:rgba(255,255,255,0.5)">Ngân hàng:</span><span class="text-white"> Vietcombank</span></div>' +
+                '<div><span style="color:rgba(255,255,255,0.5)">Số tài khoản:</span><span class="text-white"> 1234567890</span></div>' +
+                '<div><span style="color:rgba(255,255,255,0.5)">Chủ tài khoản:</span><span class="text-white"> CINEMAMAX</span></div>' +
+                '<div><span style="color:rgba(255,255,255,0.5)">Nội dung:</span><span class="text-white"> BOOKING_' + Date.now() + '</span></div>' +
+              '</div>';
+          }
+        }
+
+        main.querySelectorAll('input[name="method"]').forEach(function (radio) {
+          radio.onchange = function () {
+            paymentMethod = this.value;
+            main.querySelectorAll('.payment-method').forEach(function (l) { l.classList.remove('selected'); });
+            this.closest('.payment-method').classList.add('selected');
+            updateDetails();
+          };
+        });
+        updateDetails();
+
+        document.getElementById('payment-form').onsubmit = function (e) {
+          e.preventDefault();
+          var btn = document.getElementById('submit-btn');
+          btn.disabled = true;
+          btn.textContent = 'Đang xử lý...';
+          setTimeout(function () {
+            document.getElementById('success-dialog').classList.add('show');
+            setTimeout(function () {
+              sessionStorage.removeItem('bookingData');
+              window.location.href = 'index.html';
+            }, 3000);
+          }, 2000);
+        };
+      }
+      render();
+    })();
+  </script>
+</body>
+</html>

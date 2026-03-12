@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Chi tiết phim</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">🎬</span><span>CinemaMax</span></a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions">
+        <a href="login.html" class="btn btn-ghost btn-icon">👤</a>
+      </div>
+    </div>
+  </header>
+
+  <main class="main" id="main-content">
+    <div class="container" style="text-align:center;padding:4rem">
+      <p style="color:#fff;font-size:1.25rem">Đang tải...</p>
+    </div>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var id = App.getQueryParam('id') || '';
+      App.fetchData().then(function () {
+        App.renderHeader('movies');
+        var movie = App.data.movies.find(function (m) { return m.id === id; });
+        var main = document.getElementById('main-content');
+        if (!movie) {
+          main.innerHTML = '<div class="container"><p style="color:#fff;font-size:1.25rem">Không tìm thấy phim</p></div>';
+          return;
+        }
+        var releaseVi = new Date(movie.releaseDate).toLocaleDateString('vi-VN');
+        var statusText = movie.status === 'now-showing' ? 'Đang Chiếu' : 'Sắp Chiếu';
+        main.innerHTML =
+          '<div class="movie-hero">' +
+            '<div class="movie-hero-bg" style="background-image:url(' + movie.poster + ')"></div>' +
+            '<div class="movie-hero-inner"><div class="container"><div class="movie-hero-content">' +
+              '<a href="index.html" class="btn btn-ghost" style="margin-bottom:1rem">← Quay lại</a>' +
+              '<div class="hero-badges" style="margin-bottom:0.5rem">' +
+                '<span class="badge badge-red">' + statusText + '</span>' +
+                '<span class="badge badge-outline">' + movie.ageRating + '</span>' +
+              '</div>' +
+              '<h1>' + movie.titleVi + '</h1>' +
+              '<p class="subtitle">' + movie.title + '</p>' +
+              '<div class="hero-meta" style="gap:1.5rem;margin-bottom:1rem">' +
+                '<span>★ ' + movie.rating + '/10</span>' +
+                '<span>🕐 ' + movie.duration + ' phút</span>' +
+                '<span>📅 ' + releaseVi + '</span>' +
+              '</div>' +
+              '<div class="hero-actions">' +
+                (movie.status === 'now-showing' ? '<a href="booking.html?movieId=' + movie.id + '" class="btn btn-primary btn-lg">Đặt vé ngay</a>' : '') +
+                '<a href="' + movie.trailer + '" target="_blank" class="btn btn-ghost btn-lg">▶ Xem trailer</a>' +
+              '</div>' +
+            '</div></div></div></div>' +
+          '<div class="container" style="padding:4rem 0">' +
+            '<div class="movie-info-grid">' +
+              '<div>' +
+                '<div class="card-box" style="margin-bottom:2rem">' +
+                  '<h2 style="font-size:1.5rem;margin-bottom:0.5rem">Nội dung phim</h2>' +
+                  '<p>' + movie.descriptionVi + '</p>' +
+                  '<p style="color:rgba(255,255,255,0.5);font-style:italic;margin-top:0.5rem">' + movie.description + '</p>' +
+                '</div>' +
+                '<div class="card-box">' +
+                  '<h3>Thể loại</h3>' +
+                  '<div class="hero-genres">' + movie.genre.map(function (g) { return '<span>' + g + '</span>'; }).join('') + '</div>' +
+                '</div>' +
+              '</div>' +
+              '<div>' +
+                '<div class="card-box">' +
+                  '<h3>Thông tin</h3>' +
+                  '<p class="muted">Đạo diễn</p><p>' + movie.director + '</p>' +
+                  '<p class="muted" style="margin-top:0.75rem">Diễn viên</p><p>' + (movie.cast && movie.cast.join(', ')) + '</p>' +
+                  '<p class="muted" style="margin-top:0.75rem">Thời lượng</p><p>' + movie.duration + ' phút</p>' +
+                  '<p class="muted" style="margin-top:0.75rem">Khởi chiếu</p><p>' + releaseVi + '</p>' +
+                  '<p class="muted" style="margin-top:0.75rem">Độ tuổi</p><p>' + movie.ageRating + '</p>' +
+                '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>';
+      });
+    })();
+  </script>
+</body>
+</html>

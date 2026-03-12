@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Đăng nhập</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="login-page">
+  <div class="login-box">
+    <div class="login-logo">
+      <a href="index.html" class="logo" style="font-size:1.5rem">
+        <span class="logo-icon">🎬</span>
+        <span>CinemaMax</span>
+      </a>
+      <a href="index.html" class="btn btn-ghost">← Về trang chủ</a>
+    </div>
+    <div class="tabs">
+      <div class="tabs-list">
+        <button type="button" class="tab-trigger active" data-tab="login">Đăng nhập</button>
+        <button type="button" class="tab-trigger" data-tab="register">Đăng ký</button>
+      </div>
+      <div id="tab-login" class="tab-panel active">
+        <div class="login-form-wrap">
+          <form class="login-form" id="form-login">
+            <div class="form-group">
+              <label class="label" for="login-email">Email</label>
+              <input type="email" id="login-email" class="input" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label class="label" for="login-password">Mật khẩu</label>
+              <input type="password" id="login-password" class="input" placeholder="••••••••" required>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem">
+              <label class="checkbox-label">
+                <input type="checkbox"> Ghi nhớ đăng nhập
+              </label>
+              <a href="#" class="link-red">Quên mật khẩu?</a>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Đăng nhập</button>
+          </form>
+        </div>
+      </div>
+      <div id="tab-register" class="tab-panel">
+        <div class="login-form-wrap">
+          <form class="login-form" id="form-register">
+            <div class="form-group">
+              <label class="label" for="reg-name">Họ và tên</label>
+              <input type="text" id="reg-name" class="input" placeholder="Nguyễn Văn A" required>
+            </div>
+            <div class="form-group">
+              <label class="label" for="reg-email">Email</label>
+              <input type="email" id="reg-email" class="input" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label class="label" for="reg-phone">Số điện thoại</label>
+              <input type="tel" id="reg-phone" class="input" placeholder="0912345678" required>
+            </div>
+            <div class="form-group">
+              <label class="label" for="reg-password">Mật khẩu</label>
+              <input type="password" id="reg-password" class="input" placeholder="••••••••" required>
+            </div>
+            <div class="form-group">
+              <label class="label" for="reg-confirm">Xác nhận mật khẩu</label>
+              <input type="password" id="reg-confirm" class="input" placeholder="••••••••" required>
+            </div>
+            <label class="checkbox-label" style="align-items:flex-start;margin-bottom:1rem">
+              <input type="checkbox" required style="margin-top:0.25rem">
+              <span>Tôi đồng ý với <a href="#" class="link-red">Điều khoản dịch vụ</a> và <a href="#" class="link-red">Chính sách bảo mật</a></span>
+            </label>
+            <button type="submit" class="btn btn-primary btn-block">Đăng ký</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      App.fetchData().then(function () {});
+      document.querySelectorAll('.tab-trigger').forEach(function (btn) {
+        btn.onclick = function () {
+          document.querySelectorAll('.tab-trigger').forEach(function (b) { b.classList.remove('active'); });
+          document.querySelectorAll('.tab-panel').forEach(function (p) { p.classList.remove('active'); });
+          btn.classList.add('active');
+          var tab = btn.getAttribute('data-tab');
+          document.getElementById('tab-' + tab).classList.add('active');
+        };
+      });
+      document.getElementById('form-login').onsubmit = function (e) {
+        e.preventDefault();
+        var btn = this.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Đang đăng nhập...';
+        setTimeout(function () { window.location.href = 'index.html'; }, 1000);
+      };
+      document.getElementById('form-register').onsubmit = function (e) {
+        e.preventDefault();
+        var btn = this.querySelector('button[type="submit"]');
+        btn.disabled = true;
+        btn.textContent = 'Đang đăng ký...';
+        setTimeout(function () { window.location.href = 'index.html'; }, 1000);
+      };
+    })();
+  </script>
+</body>
+</html>

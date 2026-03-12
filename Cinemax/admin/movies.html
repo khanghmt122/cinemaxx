@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax Admin - Quản lý phim</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+  <div class="admin-wrap">
+    <aside class="admin-sidebar">
+      <div class="logo">
+        <a href="index.html"><span class="logo-icon">🎬</span><div><span class="brand">CinemaMax</span><div class="sub">Admin Panel</div></div></a>
+      </div>
+      <nav class="admin-nav">
+        <a href="index.html">📊 Tổng quan</a>
+        <a href="movies.html" class="active">🎬 Quản lý phim</a>
+        <a href="schedules.html">📅 Lịch chiếu</a>
+        <a href="theaters.html">📍 Rạp chiếu</a>
+        <a href="transactions.html">💳 Giao dịch</a>
+        <a href="statistics.html">📈 Thống kê</a>
+      </nav>
+      <div class="admin-sidebar-footer">
+        <a href="../customer/index.html" class="btn btn-ghost btn-block">← Về trang chủ</a>
+      </div>
+    </aside>
+    <main class="admin-main">
+      <div class="admin-page-title" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:1rem">
+        <div>
+          <h1>Quản lý phim</h1>
+          <p>Quản lý danh sách phim và thông tin</p>
+        </div>
+        <button type="button" class="btn btn-primary">+ Thêm phim mới</button>
+      </div>
+      <div class="filters-row">
+        <div class="search-box">
+          <span class="icon">🔍</span>
+          <input type="text" class="input" id="admin-movie-search" placeholder="Tìm kiếm phim...">
+        </div>
+      </div>
+      <div class="admin-movie-grid" id="admin-movie-grid"></div>
+    </main>
+  </div>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var search = '';
+      function render() {
+        var list = App.data.movies;
+        if (search) {
+          var q = search.toLowerCase();
+          list = list.filter(function (m) {
+            return (m.titleVi && m.titleVi.toLowerCase().indexOf(q) !== -1) ||
+                   (m.title && m.title.toLowerCase().indexOf(q) !== -1);
+          });
+        }
+        document.getElementById('admin-movie-grid').innerHTML = list.map(function (m) {
+          var status = m.status === 'now-showing' ? 'Đang chiếu' : 'Sắp chiếu';
+          var badgeClass = m.status === 'now-showing' ? 'badge-red' : 'badge-outline';
+          return '<div class="admin-movie-card">' +
+            '<div class="poster"><img src="' + m.poster + '" alt="' + m.titleVi + '"></div>' +
+            '<div class="info">' +
+              '<div style="display:flex;justify-content:space-between;align-items:flex-start;gap:0.5rem">' +
+                '<h3>' + m.titleVi + '</h3>' +
+                '<span class="badge ' + badgeClass + '" style="font-size:0.75rem">' + status + '</span>' +
+              '</div>' +
+              '<div style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-top:0.5rem">' +
+                '<p>Thể loại: ' + (m.genre && m.genre.join(', ')) + '</p>' +
+                '<p>Thời lượng: ' + m.duration + ' phút</p>' +
+                '<p>Đánh giá: ' + m.rating + '/10</p>' +
+              '</div>' +
+            '</div></div>';
+        }).join('');
+      }
+      App.fetchData().then(function () {
+        render();
+        document.getElementById('admin-movie-search').oninput = function () {
+          search = this.value.trim();
+          render();
+        };
+      });
+    })();
+  </script>
+</body>
+</html>

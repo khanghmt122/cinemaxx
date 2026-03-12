@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Đặt vé</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">🎬</span><span>CinemaMax</span></a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions"><a href="login.html" class="btn btn-ghost btn-icon">👤</a></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="padding:2rem 0">
+      <a href="#" id="back-link" class="btn btn-ghost" style="margin-bottom:1.5rem">← Quay lại</a>
+      <div class="booking-grid">
+        <div class="booking-sidebar" id="sidebar">
+          <img id="poster" src="" alt="">
+          <div style="padding:1rem">
+            <h2 id="movie-title" style="font-size:1.25rem;color:#fff;margin:0 0 0.5rem"></h2>
+            <p id="movie-meta" style="font-size:0.875rem;color:rgba(255,255,255,0.7)"></p>
+          </div>
+        </div>
+        <div>
+          <h1 style="font-size:1.875rem;color:#fff;margin-bottom:1.5rem">Đặt vé xem phim</h1>
+          <div class="booking-block">
+            <h3>📅 Chọn ngày</h3>
+            <div class="dates-row" id="dates-row"></div>
+          </div>
+          <div class="booking-block">
+            <h3>📍 Chọn rạp</h3>
+            <div class="theater-list" id="theater-list"></div>
+          </div>
+          <div class="booking-block" id="showtime-block" style="display:none">
+            <h3>🕐 Chọn suất chiếu</h3>
+            <div class="showtime-grid" id="showtime-grid"></div>
+          </div>
+          <a href="#" id="continue-btn" class="btn btn-primary btn-lg btn-block" style="margin-top:1rem;pointer-events:none;opacity:0.6">Tiếp tục chọn ghế</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var movieId = App.getQueryParam('movieId');
+      var selectedTheater = null;
+      var selectedShowtime = null;
+      var d = App.data;
+
+      App.fetchData().then(function () {
+        App.renderHeader('movies');
+        var movie = d.movies.find(function (m) { return m.id === movieId; });
+        if (!movie) {
+          document.body.innerHTML = '<div class="container" style="padding:4rem;text-align:center"><p style="color:#fff">Không tìm thấy phim</p><a href="index.html" class="btn btn-primary">Về trang chủ</a></div>';
+          return;
+        }
+        document.getElementById('back-link').href = 'movie-detail.html?id=' + movieId;
+        document.getElementById('poster').src = movie.poster;
+        document.getElementById('poster').alt = movie.titleVi;
+        document.getElementById('movie-title').textContent = movie.titleVi;
+        document.getElementById('movie-meta').textContent = movie.genre.join(', ') + ' • ' + movie.duration + ' phút • ' + movie.ageRating;
+
+        var movieShowtimes = d.showtimes.filter(function (s) { return s.movieId === movieId; });
+        var theaterIds = {};
+        movieShowtimes.forEach(function (s) { theaterIds[s.theaterId] = true; });
+        var availableTheaters = d.theaters.filter(function (t) { return theaterIds[t.id]; });
+
+        var i, date, dateStr;
+        for (i = 0; i < 7; i++) {
+          date = new Date();
+          date.setDate(date.getDate() + i);
+          dateStr = date.toISOString().split('T')[0];
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'date-btn';
+          btn.innerHTML = '<div style="font-weight:600">' + date.getDate() + '</div><div style="font-size:0.75rem;color:rgba(255,255,255,0.7)">T' + (date.getMonth() + 1) + '</div>';
+          document.getElementById('dates-row').appendChild(btn);
+        }
+
+        availableTheaters.forEach(function (t) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'theater-btn';
+          btn.dataset.id = t.id;
+          btn.innerHTML = '<p style="font-weight:600;margin:0">' + t.name + '</p><p style="font-size:0.875rem;color:rgba(255,255,255,0.6);margin:0.25rem 0 0">' + t.address + '</p>';
+          btn.onclick = function () {
+            selectedTheater = t.id;
+            selectedShowtime = null;
+            document.querySelectorAll('.theater-btn').forEach(function (b) { b.classList.remove('selected'); });
+            document.querySelectorAll('.showtime-btn').forEach(function (b) { b.classList.remove('selected'); });
+            btn.classList.add('selected');
+            var list = movieShowtimes.filter(function (s) { return s.theaterId === t.id; });
+            var grid = document.getElementById('showtime-grid');
+            grid.innerHTML = list.map(function (s) {
+              return '<button type="button" class="showtime-btn" data-id="' + s.id + '">' +
+                '<div style="font-weight:600">' + s.time + '</div>' +
+                '<div style="font-size:0.75rem;color:rgba(255,255,255,0.6)">' + App.formatPrice(s.price) + '</div></button>';
+            }).join('');
+            grid.querySelectorAll('.showtime-btn').forEach(function (b) {
+              b.onclick = function () {
+                selectedShowtime = b.dataset.id;
+                grid.querySelectorAll('.showtime-btn').forEach(function (x) { x.classList.remove('selected'); });
+                b.classList.add('selected');
+                var link = document.getElementById('continue-btn');
+                link.href = 'seat-selection.html?showtimeId=' + selectedShowtime;
+                link.style.pointerEvents = 'auto';
+                link.style.opacity = '1';
+              };
+            });
+            document.getElementById('showtime-block').style.display = 'block';
+            document.getElementById('continue-btn').style.pointerEvents = 'none';
+            document.getElementById('continue-btn').style.opacity = '0.6';
+            document.getElementById('continue-btn').href = '#';
+          };
+          document.getElementById('theater-list').appendChild(btn);
+        });
+      });
+    })();
+  </script>
+</body>
+</html>

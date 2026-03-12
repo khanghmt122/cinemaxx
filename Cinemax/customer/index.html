@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Trang chủ</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-icon">🎬</span>
+        <span>CinemaMax</span>
+      </a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions">
+        <div class="search-wrap">
+          <input type="text" placeholder="Tìm phim..." aria-label="Tìm phim">
+        </div>
+        <a href="login.html" class="btn btn-ghost btn-icon" aria-label="Đăng nhập">👤</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="hero" id="hero">
+    <div id="hero-slides"></div>
+    <button type="button" class="hero-nav prev" id="hero-prev" aria-label="Trước">‹</button>
+    <button type="button" class="hero-nav next" id="hero-next" aria-label="Sau">›</button>
+    <div class="hero-dots" id="hero-dots"></div>
+  </div>
+
+  <main class="main">
+    <div class="container">
+      <section class="section">
+        <div class="section-title">
+          <span class="icon">🎬</span>
+          <h2>Phim Đang Chiếu</h2>
+        </div>
+        <div class="movie-grid" id="now-showing"></div>
+      </section>
+      <section class="section">
+        <div class="section-title">
+          <span class="icon">✨</span>
+          <h2>Phim Sắp Chiếu</h2>
+        </div>
+        <div class="movie-grid" id="coming-soon"></div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p id="footer-text"></p>
+    </div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var heroIndex = 0;
+      var heroSlides = [];
+      var heroEl = document.getElementById('hero-slides');
+      var dotsEl = document.getElementById('hero-dots');
+
+      function showHero(i) {
+        if (!heroSlides.length) return;
+        heroIndex = (i + heroSlides.length) % heroSlides.length;
+        heroEl.innerHTML = heroSlides[heroIndex];
+        var dots = dotsEl.querySelectorAll('.hero-dot');
+        dots.forEach(function (d, j) { d.classList.toggle('active', j === heroIndex); });
+      }
+
+      App.fetchData().then(function () {
+        App.renderHeader('home');
+        App.renderFooter();
+        var movies = App.data.movies;
+        var nowShowing = movies.filter(function (m) { return m.status === 'now-showing'; });
+        var comingSoon = movies.filter(function (m) { return m.status === 'coming-soon'; });
+        var featured = nowShowing.slice(0, 3);
+
+        featured.forEach(function (m) { heroSlides.push(App.renderHeroSlide(m)); });
+        showHero(0);
+        dotsEl.innerHTML = featured.map(function (_, i) {
+          return '<button type="button" class="hero-dot' + (i === 0 ? ' active' : '') + '" data-index="' + i + '" aria-label="Slide ' + (i + 1) + '"></button>';
+        }).join('');
+        dotsEl.addEventListener('click', function (e) {
+          var i = e.target.getAttribute('data-index');
+          if (i != null) showHero(parseInt(i, 10));
+        });
+        document.getElementById('hero-prev').onclick = function () { showHero(heroIndex - 1); };
+        document.getElementById('hero-next').onclick = function () { showHero(heroIndex + 1); };
+        setInterval(function () { showHero(heroIndex + 1); }, 5000);
+
+        document.getElementById('now-showing').innerHTML = nowShowing.map(App.renderMovieCard).join('');
+        document.getElementById('coming-soon').innerHTML = comingSoon.map(App.renderMovieCard).join('');
+      });
+    })();
+  </script>
+</body>
+</html>

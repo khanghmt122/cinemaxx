@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CinemaMax - Rạp chiếu</title>
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="page">
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo"><span class="logo-icon">🎬</span><span>CinemaMax</span></a>
+      <nav class="nav" id="customer-header-nav"></nav>
+      <div class="header-actions"><a href="login.html" class="btn btn-ghost btn-icon">👤</a></div>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="container" style="padding:3rem 0">
+      <h1 style="font-size:2.25rem;color:#fff;margin:0 0 0.25rem">Hệ thống rạp</h1>
+      <p style="color:rgba(255,255,255,0.5);margin:0 0 2rem">Tìm rạp chiếu phim gần bạn nhất</p>
+      <div class="theater-grid" id="theater-grid"></div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container"><p id="footer-text"></p></div>
+  </footer>
+
+  <script src="../js/app.js"></script>
+  <script>
+    App.fetchData().then(function () {
+      App.renderHeader('theaters');
+      App.renderFooter();
+      var html = App.data.theaters.map(function (t) {
+        return '<div class="theater-card">' +
+          '<h3><span class="icon">📍</span><div><span>' + t.name + '</span><div class="location">' + t.location + '</div></div></h3>' +
+          '<p class="address">' + t.address + '</p>' +
+          '<div class="meta"><span>🕐 8:00 - 23:00</span><span>📞 1900-xxxx</span></div>' +
+          '<a href="#" class="link-red" style="display:inline-block;margin-top:0.5rem;font-weight:600">Xem lịch chiếu →</a>' +
+        '</div>';
+      }).join('');
+      document.getElementById('theater-grid').innerHTML = html;
+    });
+  </script>
+</body>
+</html>
